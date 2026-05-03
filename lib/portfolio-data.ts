@@ -89,7 +89,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-red-950 via-zinc-900 to-black",
     accent: "bg-amber-500/10 text-amber-300 border-amber-500/20",
-    image: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200&q=85&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1506377585622-bedcbb027afc?w=1200&q=85&auto=format&fit=crop",
     screens: [
       {
         title: "Pagina principală",

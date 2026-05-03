@@ -31,13 +31,13 @@ const photos = {
   barber1: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=300",
   barber2: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=300",
   barber3: "https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=300",
-  // Tohami winery — verified clean wine/vineyard photos
-  wineryHero: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=1200",
+  // Tohami winery — verified wine/vineyard photos
+  wineryHero: "https://images.unsplash.com/photo-1506377585622-bedcbb027afc?w=1200",
   wine1: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600",
   wine2: "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=600",
   wine3: "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600",
   wineCellar: "https://images.unsplash.com/photo-1560707303-4e980ce876ad?w=800",
-  vineyardLandscape: "https://images.unsplash.com/photo-1528823872057-9c018a7a7553?w=800",
+  vineyardLandscape: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=800",
   wineryEstate: "https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=600",
   wineryBarrel: "https://images.unsplash.com/photo-1584553421349-3557471bed79?w=600",
   wineGlass: "https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=600",
@@ -304,48 +304,45 @@ function TohamiHero() {
   return (
     <div className="h-full relative overflow-hidden" style={{ background: TH_DARK }}>
       <img src={photos.wineryHero} alt="" className="absolute inset-0 w-full h-full object-cover" />
-      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(20,10,8,.35) 0%, rgba(20,10,8,.55) 50%, rgba(20,10,8,.93) 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(10,5,4,.2) 0%, rgba(10,5,4,.5) 40%, rgba(10,5,4,.92) 100%)" }} />
 
-      {/* Nav */}
-      <div className="absolute top-0 inset-x-0 flex items-center justify-between px-6 py-4">
-        <div>
-          <p className="font-display text-sm tracking-[0.35em] uppercase text-white/95">TOHAMI</p>
-          <p className="text-[7px] tracking-[0.5em] uppercase" style={{ color: TH_GOLD }}>Cramă &amp; Vinărie</p>
-        </div>
-        <div className="hidden md:flex gap-6 text-[8px] tracking-[0.2em] uppercase text-white/55">
+      {/* Nav — compact, single row */}
+      <div className="absolute top-0 inset-x-0 flex items-center justify-between px-5 py-3">
+        <span className="font-display text-[11px] tracking-[0.4em] uppercase text-white/95 shrink-0">TOHAMI</span>
+        <div className="flex gap-4 text-[7px] tracking-[0.25em] uppercase text-white/55">
           <span>Vinuri</span>
           <span>Domeniu</span>
           <span>Poveste</span>
           <span>Contact</span>
         </div>
-        <span className="text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 border" style={{ borderColor: TH_GOLD, color: TH_GOLD }}>
+        <span className="text-[7px] tracking-[0.18em] uppercase px-2.5 py-1.5 border shrink-0" style={{ borderColor: TH_GOLD, color: TH_GOLD }}>
           Vizitează
         </span>
       </div>
 
-      {/* Hero text */}
-      <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
-        <p className="text-[8px] tracking-[0.55em] uppercase mb-3" style={{ color: TH_GOLD, opacity: 0.9 }}>
+      {/* Hero text — bottom left */}
+      <div className="absolute inset-0 flex flex-col justify-end p-7">
+        <p className="text-[7px] tracking-[0.5em] uppercase mb-2.5" style={{ color: TH_GOLD }}>
           Moldova · Codru · Est. 1987
         </p>
-        <h1 className="font-display text-4xl md:text-5xl text-white font-normal leading-[1.1] max-w-lg">
+        <h1 className="font-display text-[2.6rem] text-white font-normal leading-[1.05] max-w-sm">
           Vin din piatră,<br /><em>timp și răbdare.</em>
         </h1>
-        <p className="text-[10px] mt-4 max-w-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-          Tohami produce vinuri de caracter din soiuri autohtone. Fiecare sticlă
-          spune povestea solului nostru și a oamenilor care l-au lucrat.
+        <p className="text-[9px] mt-3 max-w-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.48)" }}>
+          Tohami produce vinuri de caracter din soiuri autohtone.
+          Fiecare sticlă spune povestea solului nostru.
         </p>
-        <div className="flex gap-3 mt-6">
-          <span className="text-[9px] tracking-[0.2em] uppercase px-5 py-2.5 text-white" style={{ background: TH_WINE }}>
+        <div className="flex gap-2.5 mt-5">
+          <span className="text-[8px] tracking-[0.2em] uppercase px-4 py-2 text-white" style={{ background: TH_WINE }}>
             Descoperă vinurile
           </span>
-          <span className="text-[9px] tracking-[0.2em] uppercase px-5 py-2.5 border text-white/75" style={{ borderColor: "rgba(255,255,255,0.22)" }}>
+          <span className="text-[8px] tracking-[0.2em] uppercase px-4 py-2 border text-white/70" style={{ borderColor: "rgba(255,255,255,0.2)" }}>
             Despre domeniu
           </span>
         </div>
-        <div className="flex items-center gap-2 mt-8">
-          <div className="w-8 h-px" style={{ background: TH_GOLD, opacity: 0.4 }} />
-          <span className="text-[7px] tracking-[0.4em] uppercase" style={{ color: "rgba(255,255,255,0.3)" }}>Derulează</span>
+        <div className="flex items-center gap-2 mt-6">
+          <div className="w-8 h-px" style={{ background: TH_GOLD, opacity: 0.35 }} />
+          <span className="text-[7px] tracking-[0.4em] uppercase" style={{ color: "rgba(255,255,255,0.28)" }}>Derulează</span>
         </div>
       </div>
     </div>
