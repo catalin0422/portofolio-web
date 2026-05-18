@@ -19,6 +19,7 @@ import {
 import { getProject, projects } from "@/lib/portfolio-data";
 import { mockupsBySlug } from "@/components/portfolio/mockups";
 
+/* ─── Scroll-reveal ──────────────────────────────────────────────────────── */
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -26,13 +27,8 @@ function useReveal() {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 }
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.12 }
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -40,60 +36,91 @@ function useReveal() {
   return { ref, visible };
 }
 
-function Reveal({
-  children,
-  delay = 0,
-  className = "",
-}: {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-}) {
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   const { ref, visible } = useReveal();
   return (
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`transition-all duration-700 ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      } ${className}`}
+      className={`transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"} ${className}`}
     >
       {children}
     </div>
   );
 }
 
+/* ─── Browser window with optional live iframe ───────────────────────────── */
+const IFRAME_W = 1280;
+
 function BrowserMockup({
-  title,
+  urlLabel,
   Mockup,
+  previewUrl,
   large = false,
 }: {
-  title: string;
+  urlLabel: string;
   Mockup?: React.ComponentType;
+  previewUrl?: string;
   large?: boolean;
 }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.5);
+
+  useEffect(() => {
+    if (!previewUrl) return;
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / IFRAME_W));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [previewUrl]);
+
   return (
-    <div className="rounded-xl overflow-hidden border border-white/10 bg-zinc-900 shadow-2xl">
-      <div className="flex items-center gap-1.5 px-4 py-3 bg-zinc-900 border-b border-white/5">
-        <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-        <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-        <div className="ml-3 flex-1 px-3 py-1 rounded text-[10px] text-zinc-500 bg-zinc-800/50 truncate">
-          {title.toLowerCase().replace(/\s+/g, "-")}.app
+    <div className="rounded-2xl overflow-hidden border border-stone-200 bg-white shadow-card">
+      {/* Chrome bar */}
+      <div className="flex items-center gap-1.5 px-4 py-3 bg-stone-50 border-b border-stone-200">
+        <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
+        <div className="w-2.5 h-2.5 rounded-full bg-green-400/80" />
+        <div className="ml-3 flex-1 px-3 py-1 rounded-md text-[10px] text-stone-400 bg-stone-200/60 truncate font-mono">
+          {urlLabel}
         </div>
       </div>
-      <div className={`relative ${large ? "aspect-[16/9]" : "aspect-[16/10]"} overflow-hidden`}>
-        {Mockup ? <Mockup /> : <div className="w-full h-full bg-zinc-900" />}
+
+      {/* Content */}
+      <div
+        ref={wrapRef}
+        className={`relative overflow-hidden ${large ? "aspect-[16/9]" : "aspect-[16/10]"}`}
+      >
+        {previewUrl ? (
+          <iframe
+            src={previewUrl}
+            title={urlLabel}
+            scrolling="no"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: IFRAME_W,
+              height: large ? Math.round(IFRAME_W * 9 / 16) : Math.round(IFRAME_W * 10 / 16),
+              border: "none",
+              transformOrigin: "top left",
+              transform: `scale(${scale})`,
+              pointerEvents: "none",
+            }}
+          />
+        ) : Mockup ? (
+          <Mockup />
+        ) : (
+          <div className="w-full h-full bg-stone-100" />
+        )}
       </div>
     </div>
   );
 }
 
-export default function ProjectPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+/* ─── Page ───────────────────────────────────────────────────────────────── */
+export default function ProjectPage({ params }: { params: { slug: string } }) {
   const project = getProject(params.slug);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
@@ -102,12 +129,8 @@ export default function ProjectPage({
     const handler = (e: KeyboardEvent) => {
       if (!project) return;
       if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowRight")
-        setLightbox((i) => (i === null ? 0 : (i + 1) % project.screens.length));
-      if (e.key === "ArrowLeft")
-        setLightbox((i) =>
-          i === null ? 0 : (i - 1 + project.screens.length) % project.screens.length
-        );
+      if (e.key === "ArrowRight") setLightbox((i) => (i === null ? 0 : (i + 1) % project.screens.length));
+      if (e.key === "ArrowLeft")  setLightbox((i) => (i === null ? 0 : (i - 1 + project.screens.length) % project.screens.length));
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -115,58 +138,56 @@ export default function ProjectPage({
 
   if (!project) notFound();
 
-  const mockups = mockupsBySlug[project.slug] || [];
+  const mockups      = mockupsBySlug[project.slug] || [];
   const otherProjects = projects.filter((p) => p.slug !== project.slug).slice(0, 3);
 
-  return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-cyan-500/30">
-      {/* Background */}
-      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute top-1/3 -left-40 w-[500px] h-[500px] rounded-full bg-violet-500/10 blur-3xl" />
-      </div>
+  // Use iframe for screen 0 if previewUrl exists, mockup otherwise
+  const heroPreview = project.previewUrl;
 
-      {/* Nav */}
-      <nav className="sticky top-0 z-40 backdrop-blur-xl bg-zinc-950/70 border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+  return (
+    <div className="min-h-screen bg-[#f9f8f6] text-stone-900">
+
+      {/* ── Nav ──────────────────────────────────────────────────────────── */}
+      <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/80">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/portfolio" className="flex items-center gap-2 group">
-            <ArrowLeft className="w-4 h-4 text-zinc-400 group-hover:text-white group-hover:-translate-x-0.5 transition" />
-            <span className="text-sm text-zinc-400 group-hover:text-white transition">
+            <ArrowLeft className="w-4 h-4 text-stone-400 group-hover:text-stone-900 group-hover:-translate-x-0.5 transition-all" />
+            <span className="text-sm text-stone-500 group-hover:text-stone-900 transition-colors">
               Înapoi la portofoliu
             </span>
           </Link>
           <div className="flex items-center gap-2 text-sm">
-            <Code2 className="w-4 h-4 text-cyan-400" />
-            <span className="font-semibold tracking-tight">Dogaru Cătălin</span>
+            <Code2 className="w-4 h-4 text-cyan-600" />
+            <span className="font-semibold tracking-tight text-stone-900">Dogaru Cătălin</span>
           </div>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="max-w-6xl mx-auto px-6 pt-16 pb-12">
+      {/* ── Hero text ────────────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pt-16 pb-10">
         <Reveal>
           <span className={`inline-block text-xs px-3 py-1 rounded-full border ${project.accent} mb-6`}>
             {project.category}
           </span>
         </Reveal>
-        <Reveal delay={100}>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+        <Reveal delay={80}>
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-stone-900 mb-6">
             {project.name}
           </h1>
         </Reveal>
-        <Reveal delay={200}>
-          <p className="text-lg md:text-xl text-zinc-400 max-w-3xl leading-relaxed">
+        <Reveal delay={160}>
+          <p className="text-lg md:text-xl text-stone-500 max-w-3xl leading-relaxed">
             {project.longDesc}
           </p>
         </Reveal>
-        <Reveal delay={300}>
+        <Reveal delay={240}>
           <div className="mt-10 flex flex-wrap gap-3">
-            {project.liveUrl && (
+            {project.previewUrl && (
               <a
-                href={project.liveUrl}
-                target={project.liveUrl.startsWith("/") ? "_self" : "_blank"}
+                href={project.previewUrl}
+                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-zinc-900 font-medium hover:bg-zinc-200 transition"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-900 text-white font-medium hover:bg-stone-700 transition-colors"
               >
                 <ExternalLink className="w-4 h-4" />
                 {project.liveLabel || "Vezi live"}
@@ -174,7 +195,7 @@ export default function ProjectPage({
             )}
             <Link
               href="/portfolio#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 hover:border-white/30 hover:bg-white/5 transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-stone-300 text-stone-700 hover:border-stone-400 hover:bg-stone-50 transition-colors"
             >
               Vreau ceva similar
               <ArrowRight className="w-4 h-4" />
@@ -183,78 +204,70 @@ export default function ProjectPage({
         </Reveal>
       </section>
 
-      {/* Hero screenshot */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
+      {/* ── Hero screenshot ───────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pb-16">
         <Reveal delay={200}>
           <div
             onClick={() => setLightbox(0)}
-            className="cursor-zoom-in transition hover:scale-[1.01] duration-500"
+            className="cursor-zoom-in transition-transform hover:scale-[1.005] duration-500"
           >
             <BrowserMockup
-              title={project.screens[0].title}
+              urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
               Mockup={mockups[0]}
+              previewUrl={heroPreview}
               large
             />
           </div>
         </Reveal>
       </section>
 
-      {/* Meta info */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      {/* ── Meta info ────────────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { icon: User, label: "Client", value: project.client },
-            { icon: Calendar, label: "An", value: project.year },
-            { icon: Clock, label: "Durată", value: project.duration },
-            { icon: Code2, label: "Tehnologii", value: `${project.tech.length}+ tools` },
+            { icon: User,     label: "Client",      value: project.client },
+            { icon: Calendar, label: "An",           value: project.year },
+            { icon: Clock,    label: "Durată",       value: project.duration },
+            { icon: Code2,    label: "Tehnologii",   value: `${project.tech.length} tools` },
           ].map((item, i) => (
-            <Reveal key={item.label} delay={i * 80}>
-              <div className="p-5 rounded-xl border border-white/5 bg-white/[0.02]">
-                <item.icon className="w-4 h-4 text-cyan-400 mb-3" />
-                <p className="text-xs text-zinc-500 uppercase tracking-wide mb-1">
-                  {item.label}
-                </p>
-                <p className="text-sm font-medium">{item.value}</p>
+            <Reveal key={item.label} delay={i * 70}>
+              <div className="p-5 rounded-2xl border border-stone-200 bg-white shadow-card">
+                <item.icon className="w-4 h-4 text-cyan-600 mb-3" />
+                <p className="text-xs text-stone-400 uppercase tracking-wide mb-1">{item.label}</p>
+                <p className="text-sm font-semibold text-stone-900">{item.value}</p>
               </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Features + Tech */}
-      <section className="max-w-6xl mx-auto px-6 pb-24 grid lg:grid-cols-3 gap-10">
-        <Reveal>
-          <div className="lg:col-span-2">
-            <p className="text-sm text-cyan-400 font-medium mb-3 tracking-wide uppercase">
-              Funcționalități
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight mb-8">
-              Ce am construit
-            </h2>
-            <ul className="space-y-4">
-              {project.features.map((f) => (
-                <li key={f} className="flex items-start gap-3">
-                  <div className="mt-1 w-5 h-5 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-3 h-3 text-cyan-400" />
-                  </div>
-                  <span className="text-zinc-300">{f}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* ── Features + Tech ──────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pb-20 grid lg:grid-cols-3 gap-12">
+        <Reveal className="lg:col-span-2">
+          <p className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 uppercase tracking-[0.18em] mb-4">
+            <span className="w-5 h-px bg-cyan-500" />Funcționalități
+          </p>
+          <h2 className="text-3xl font-bold tracking-tight text-stone-900 mb-8">Ce am construit</h2>
+          <ul className="space-y-4">
+            {project.features.map((f) => (
+              <li key={f} className="flex items-start gap-3">
+                <span className="mt-0.5 w-5 h-5 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center flex-shrink-0">
+                  <Check className="w-3 h-3 text-emerald-600" />
+                </span>
+                <span className="text-stone-600 leading-relaxed">{f}</span>
+              </li>
+            ))}
+          </ul>
         </Reveal>
 
-        <Reveal delay={150}>
-          <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] sticky top-24">
-            <p className="text-sm text-cyan-400 font-medium mb-3 tracking-wide uppercase">
-              Stack tehnic
+        <Reveal delay={120}>
+          <div className="p-6 rounded-2xl border border-stone-200 bg-white shadow-card sticky top-24">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 uppercase tracking-[0.18em] mb-5">
+              <span className="w-5 h-px bg-cyan-500" />Stack tehnic
             </p>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((t) => (
-                <span
-                  key={t}
-                  className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-zinc-300"
-                >
+                <span key={t} className="text-xs px-3 py-1.5 rounded-full bg-stone-100 border border-stone-200 text-stone-600 font-medium">
                   {t}
                 </span>
               ))}
@@ -263,32 +276,29 @@ export default function ProjectPage({
         </Reveal>
       </section>
 
-      {/* Gallery */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      {/* ── Gallery ──────────────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
         <Reveal>
           <div className="mb-12">
-            <p className="text-sm text-cyan-400 font-medium mb-3 tracking-wide uppercase">
-              Galerie
+            <p className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 uppercase tracking-[0.18em] mb-4">
+              <span className="w-5 h-px bg-cyan-500" />Galerie
             </p>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Ecrane din aplicație
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight text-stone-900">Ecrane din aplicație</h2>
           </div>
         </Reveal>
 
         <div className="grid md:grid-cols-2 gap-6">
           {project.screens.map((s, i) => (
-            <Reveal key={s.title} delay={i * 100}>
-              <button
-                onClick={() => setLightbox(i)}
-                className="text-left w-full group"
-              >
-                <BrowserMockup title={s.title} Mockup={mockups[i]} />
+            <Reveal key={s.title} delay={i * 80}>
+              <button onClick={() => setLightbox(i)} className="text-left w-full group">
+                <BrowserMockup
+                  urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
+                  Mockup={mockups[i]}
+                  previewUrl={i === 0 ? heroPreview : undefined}
+                />
                 <div className="mt-4 px-1">
-                  <h3 className="font-semibold mb-1 group-hover:text-cyan-300 transition">
-                    {s.title}
-                  </h3>
-                  <p className="text-sm text-zinc-400">{s.desc}</p>
+                  <h3 className="font-semibold text-stone-900 mb-1 group-hover:text-cyan-600 transition-colors">{s.title}</h3>
+                  <p className="text-sm text-stone-500">{s.desc}</p>
                 </div>
               </button>
             </Reveal>
@@ -296,17 +306,12 @@ export default function ProjectPage({
         </div>
       </section>
 
-      {/* Other projects */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
+      {/* ── Other projects ───────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-6 pb-20">
         <Reveal>
           <div className="mb-10 flex items-end justify-between">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-              Alte proiecte
-            </h2>
-            <Link
-              href="/portfolio"
-              className="text-sm text-zinc-400 hover:text-white transition inline-flex items-center gap-1"
-            >
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-stone-900">Alte proiecte</h2>
+            <Link href="/portfolio" className="text-sm text-stone-400 hover:text-stone-900 transition-colors inline-flex items-center gap-1">
               Vezi toate <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
@@ -314,26 +319,27 @@ export default function ProjectPage({
 
         <div className="grid md:grid-cols-3 gap-5">
           {otherProjects.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 100}>
+            <Reveal key={p.slug} delay={i * 80}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <Link
                 href={`/portfolio/${p.slug}`}
-                className="block group rounded-2xl border border-white/5 overflow-hidden hover:border-white/15 transition"
+                className="block group rounded-2xl border border-stone-200 bg-white overflow-hidden hover:border-stone-300 shadow-card hover:shadow-card-hover transition-all duration-300"
               >
-                <div
-                  className={`relative aspect-[16/10] bg-gradient-to-br ${p.gradient} overflow-hidden`}
-                >
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_50%)]" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-2xl md:text-3xl font-bold tracking-tight text-white/10 group-hover:text-white/20 transition duration-500">
-                      {p.name}
-                    </span>
-                  </div>
+                <div className="relative aspect-[16/10] overflow-hidden bg-stone-100">
+                  {p.previewUrl ? (
+                    <IframeThumb src={p.previewUrl} name={p.name} />
+                  ) : (
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  )}
                 </div>
-                <div className="p-5 bg-white/[0.02]">
-                  <p className="text-xs text-zinc-500 mb-1">{p.category}</p>
-                  <h3 className="font-semibold group-hover:text-cyan-300 transition">
-                    {p.name}
-                  </h3>
+                <div className="p-4">
+                  <p className="text-xs text-stone-400 mb-1">{p.category}</p>
+                  <h3 className="font-semibold text-stone-900 group-hover:text-cyan-600 transition-colors">{p.name}</h3>
                 </div>
               </Link>
             </Reveal>
@@ -341,94 +347,117 @@ export default function ProjectPage({
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <Reveal>
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-cyan-500/10 via-transparent to-violet-500/10 p-10 md:p-14 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Îți place ce vezi?
-            </h2>
-            <p className="text-zinc-400 max-w-xl mx-auto mb-8">
-              Pot construi ceva similar pentru afacerea ta, adaptat fix pe nevoile și fluxul tău de lucru.
-            </p>
-            <Link
-              href="/portfolio#contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-zinc-900 font-medium hover:bg-zinc-200 transition"
-            >
-              Hai să discutăm
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </Reveal>
+      {/* ── CTA — dark contrast anchor ────────────────────────────────────── */}
+      <section className="bg-stone-900">
+        <div className="max-w-6xl mx-auto px-6 py-24">
+          <Reveal>
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-4">
+                Îți place ce vezi?
+              </h2>
+              <p className="text-stone-400 max-w-xl mx-auto mb-8 leading-relaxed">
+                Pot construi ceva similar pentru afacerea ta, adaptat fix pe nevoile și fluxul tău de lucru.
+              </p>
+              <Link
+                href="/portfolio#contact"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-stone-900 font-semibold hover:bg-stone-100 transition-colors"
+              >
+                Hai să discutăm
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
+      {/* ── Footer ───────────────────────────────────────────────────────── */}
+      <footer className="bg-white border-t border-stone-200">
+        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-stone-400">
           <div className="flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-cyan-400" />
+            <Code2 className="w-4 h-4 text-stone-300" />
             <span>Dogaru Cătălin · Web Developer</span>
           </div>
           <p>© {new Date().getFullYear()} · Construit cu pasiune și cod curat.</p>
         </div>
       </footer>
 
-      {/* Lightbox */}
+      {/* ── Lightbox ─────────────────────────────────────────────────────── */}
       {lightbox !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-12"
           onClick={() => setLightbox(null)}
         >
           <button
             onClick={() => setLightbox(null)}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 text-white" />
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox(
-                (lightbox - 1 + project.screens.length) % project.screens.length
-              );
-            }}
-            className="absolute left-4 md:left-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+            onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + project.screens.length) % project.screens.length); }}
+            className="absolute left-4 md:left-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6 text-white" />
           </button>
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox((lightbox + 1) % project.screens.length);
-            }}
-            className="absolute right-4 md:right-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+            onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % project.screens.length); }}
+            className="absolute right-4 md:right-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6 text-white" />
           </button>
 
-          <div
-            className="w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
             <BrowserMockup
-              title={project.screens[lightbox].title}
+              urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
               Mockup={mockups[lightbox]}
+              previewUrl={lightbox === 0 ? heroPreview : undefined}
               large
             />
             <div className="mt-6 text-center">
-              <h3 className="text-xl font-semibold mb-1">
-                {project.screens[lightbox].title}
-              </h3>
-              <p className="text-zinc-400 text-sm">
-                {project.screens[lightbox].desc}
-              </p>
-              <p className="text-zinc-600 text-xs mt-3">
+              <h3 className="text-xl font-semibold text-white mb-1">{project.screens[lightbox].title}</h3>
+              <p className="text-stone-400 text-sm">{project.screens[lightbox].desc}</p>
+              <p className="text-stone-600 text-xs mt-3">
                 {lightbox + 1} / {project.screens.length} · folosește săgețile pentru a naviga
               </p>
             </div>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ─── Tiny iframe thumbnail for "other projects" cards ───────────────────── */
+function IframeThumb({ src, name }: { src: string; name: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.25);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / IFRAME_W));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={wrapRef} className="absolute inset-0">
+      <iframe
+        src={src}
+        title={name}
+        scrolling="no"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: IFRAME_W,
+          height: Math.round(IFRAME_W * 10 / 16),
+          border: "none",
+          transformOrigin: "top left",
+          transform: `scale(${scale})`,
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
 }

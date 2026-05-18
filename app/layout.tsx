@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Dogaru Cătălin — Web Developer",
@@ -23,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ro" className={`${inter.variable} dark`}>
+    <html lang="ro" className={GeistSans.variable}>
       <body className="min-h-screen font-sans">{children}</body>
     </html>
   );

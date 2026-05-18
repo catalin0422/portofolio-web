@@ -1,74 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.font-display {
-  font-family: 'Playfair Display', ui-serif, Georgia, serif;
-}
-
 @layer base {
   :root {
-    --background: 24 12% 6%;
-    --foreground: 40 33% 96%;
-    --card: 24 14% 9%;
-    --card-foreground: 40 33% 96%;
-    --popover: 24 14% 9%;
-    --popover-foreground: 40 33% 96%;
-    --primary: 43 65% 52%;
-    --primary-foreground: 24 30% 8%;
-    --secondary: 24 10% 14%;
-    --secondary-foreground: 40 33% 96%;
-    --muted: 24 8% 16%;
-    --muted-foreground: 40 10% 65%;
-    --accent: 43 80% 52%;
-    --accent-foreground: 24 30% 8%;
+    --background: 40 20% 97%;
+    --foreground: 20 10% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 8%;
+    --primary: 197 71% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 40 10% 94%;
+    --secondary-foreground: 20 10% 8%;
+    --muted: 40 10% 94%;
+    --muted-foreground: 20 5% 44%;
+    --accent: 197 71% 40%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 65% 48%;
     --destructive-foreground: 0 0% 98%;
-    --border: 24 10% 18%;
-    --input: 24 10% 18%;
-    --ring: 43 65% 52%;
+    --border: 40 10% 88%;
+    --input: 40 10% 88%;
+    --ring: 197 71% 40%;
     --radius: 0.5rem;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
   html {
-    color-scheme: dark;
-    /* Prevent tiny text on mobile */
     -webkit-text-size-adjust: 100%;
     font-size: 16px;
   }
   body {
-    @apply bg-background text-foreground antialiased;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 50% -10%, hsla(43, 65%, 52%, 0.08), transparent),
-      radial-gradient(ellipse 60% 50% at 100% 100%, hsla(43, 65%, 52%, 0.05), transparent);
-    background-attachment: fixed;
+    @apply bg-[#f9f8f6] text-stone-900 antialiased;
   }
   ::selection {
-    @apply bg-gold-500/30 text-gold-100;
+    background: rgba(6, 182, 212, 0.15);
+    color: #0c4a6e;
   }
 }
 
+/* ─── Entrance animations ───────────────────────────────────────────────── */
+
+/* Navbar slides up from 10px below */
+@keyframes nav-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Headline words slide up from 12px below */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Subtitle / CTA fade up */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ─── Utility shadows ───────────────────────────────────────────────────── */
 @layer utilities {
-  .text-gradient-gold {
-    background: linear-gradient(135deg, #f4e9b8 0%, #d4af37 50%, #86691a 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .border-gradient-gold {
-    border-image: linear-gradient(135deg, #d4af37, #86691a) 1;
-  }
-  .glass {
-    @apply bg-card/70 backdrop-blur-md border border-white/5;
-  }
-  .glow-gold {
-    box-shadow: 0 0 24px -4px hsla(43, 65%, 52%, 0.3);
-  }
+  .shadow-card       { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06); }
+  .shadow-card-hover { box-shadow: 0 4px 8px rgba(0,0,0,0.06), 0 16px 40px rgba(0,0,0,0.1); }
 }
