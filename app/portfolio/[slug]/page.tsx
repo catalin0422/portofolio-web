@@ -12,12 +12,8 @@ import {
   Clock,
   User,
   Code2,
-  X,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import { getProject, projects } from "@/lib/portfolio-data";
-import { mockupsBySlug } from "@/components/portfolio/mockups";
 
 /* ─── Scroll-reveal ──────────────────────────────────────────────────────── */
 function useReveal() {
@@ -49,32 +45,18 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-/* ─── Browser window with optional live iframe ───────────────────────────── */
-const IFRAME_W = 1280;
-
+/* ─── Browser mockup with static image or React mockup ──────────────────── */
 function BrowserMockup({
   urlLabel,
   Mockup,
-  previewUrl,
+  image,
   large = false,
 }: {
   urlLabel: string;
   Mockup?: React.ComponentType;
-  previewUrl?: string;
+  image?: string;
   large?: boolean;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.5);
-
-  useEffect(() => {
-    if (!previewUrl) return;
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / IFRAME_W));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [previewUrl]);
-
   return (
     <div className="rounded-2xl overflow-hidden border border-stone-200 bg-white shadow-card">
       {/* Chrome bar */}
@@ -88,29 +70,12 @@ function BrowserMockup({
       </div>
 
       {/* Content */}
-      <div
-        ref={wrapRef}
-        className={`relative overflow-hidden ${large ? "aspect-[16/9]" : "aspect-[16/10]"}`}
-      >
-        {previewUrl ? (
-          <iframe
-            src={previewUrl}
-            title={urlLabel}
-            scrolling="no"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: IFRAME_W,
-              height: large ? Math.round(IFRAME_W * 9 / 16) : Math.round(IFRAME_W * 10 / 16),
-              border: "none",
-              transformOrigin: "top left",
-              transform: `scale(${scale})`,
-              pointerEvents: "none",
-            }}
-          />
-        ) : Mockup ? (
+      <div className={`relative overflow-hidden ${large ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+        {Mockup ? (
           <Mockup />
+        ) : image ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={image} alt={urlLabel} className="absolute inset-0 w-full h-full object-cover object-top" />
         ) : (
           <div className="w-full h-full bg-stone-100" />
         )}
@@ -122,27 +87,12 @@ function BrowserMockup({
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   const project = getProject(params.slug);
-  const [lightbox, setLightbox] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (lightbox === null) return;
-    const handler = (e: KeyboardEvent) => {
-      if (!project) return;
-      if (e.key === "Escape") setLightbox(null);
-      if (e.key === "ArrowRight") setLightbox((i) => (i === null ? 0 : (i + 1) % project.screens.length));
-      if (e.key === "ArrowLeft")  setLightbox((i) => (i === null ? 0 : (i - 1 + project.screens.length) % project.screens.length));
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [lightbox, project]);
 
   if (!project) notFound();
 
-  const mockups      = mockupsBySlug[project.slug] || [];
   const otherProjects = projects.filter((p) => p.slug !== project.slug).slice(0, 3);
 
-  // Use iframe for screen 0 if previewUrl exists, mockup otherwise
-  const heroPreview = project.previewUrl;
+  const heroImage = project.image;
 
   return (
     <div className="min-h-screen bg-[#f9f8f6] text-stone-900">
@@ -182,9 +132,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </Reveal>
         <Reveal delay={240}>
           <div className="mt-10 flex flex-wrap gap-3">
-            {project.previewUrl && (
+            {(project.liveUrl || project.previewUrl) && (
               <a
-                href={project.previewUrl}
+                href={project.liveUrl || project.previewUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-900 text-white font-medium hover:bg-stone-700 transition-colors"
@@ -212,9 +162,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             className="cursor-zoom-in transition-transform hover:scale-[1.005] duration-500"
           >
             <BrowserMockup
-              urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
+              urlLabel={(project.liveUrl || project.previewUrl)?.replace("https://", "") ?? `${project.slug}.app`}
               Mockup={mockups[0]}
-              previewUrl={heroPreview}
+              image={heroImage}
               large
             />
           </div>
@@ -276,35 +226,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </Reveal>
       </section>
 
-      {/* ── Gallery ──────────────────────────────────────────────────────── */}
-      <section className="max-w-6xl mx-auto px-6 pb-20">
-        <Reveal>
-          <div className="mb-12">
-            <p className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-600 uppercase tracking-[0.18em] mb-4">
-              <span className="w-5 h-px bg-cyan-500" />Galerie
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight text-stone-900">Ecrane din aplicație</h2>
-          </div>
-        </Reveal>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {project.screens.map((s, i) => (
-            <Reveal key={s.title} delay={i * 80}>
-              <button onClick={() => setLightbox(i)} className="text-left w-full group">
-                <BrowserMockup
-                  urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
-                  Mockup={mockups[i]}
-                  previewUrl={i === 0 ? heroPreview : undefined}
-                />
-                <div className="mt-4 px-1">
-                  <h3 className="font-semibold text-stone-900 mb-1 group-hover:text-cyan-600 transition-colors">{s.title}</h3>
-                  <p className="text-sm text-stone-500">{s.desc}</p>
-                </div>
-              </button>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
       {/* ── Other projects ───────────────────────────────────────────────── */}
       <section className="max-w-6xl mx-auto px-6 pb-20">
@@ -326,16 +247,12 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 className="block group rounded-2xl border border-stone-200 bg-white overflow-hidden hover:border-stone-300 shadow-card hover:shadow-card-hover transition-all duration-300"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-stone-100">
-                  {p.previewUrl ? (
-                    <IframeThumb src={p.previewUrl} name={p.name} />
-                  ) : (
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  )}
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-stone-400 mb-1">{p.category}</p>
@@ -381,83 +298,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
         </div>
       </footer>
 
-      {/* ── Lightbox ─────────────────────────────────────────────────────── */}
-      {lightbox !== null && (
-        <div
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-12"
-          onClick={() => setLightbox(null)}
-        >
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + project.screens.length) % project.screens.length); }}
-            className="absolute left-4 md:left-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-          >
-            <ChevronLeft className="w-6 h-6 text-white" />
-          </button>
-          <button
-            onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % project.screens.length); }}
-            className="absolute right-4 md:right-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-          >
-            <ChevronRight className="w-6 h-6 text-white" />
-          </button>
-
-          <div className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            <BrowserMockup
-              urlLabel={project.previewUrl?.replace("https://", "") ?? `${project.slug}.app`}
-              Mockup={mockups[lightbox]}
-              previewUrl={lightbox === 0 ? heroPreview : undefined}
-              large
-            />
-            <div className="mt-6 text-center">
-              <h3 className="text-xl font-semibold text-white mb-1">{project.screens[lightbox].title}</h3>
-              <p className="text-stone-400 text-sm">{project.screens[lightbox].desc}</p>
-              <p className="text-stone-600 text-xs mt-3">
-                {lightbox + 1} / {project.screens.length} · folosește săgețile pentru a naviga
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
-/* ─── Tiny iframe thumbnail for "other projects" cards ───────────────────── */
-function IframeThumb({ src, name }: { src: string; name: string }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.25);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => setScale(e.contentRect.width / IFRAME_W));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  return (
-    <div ref={wrapRef} className="absolute inset-0">
-      <iframe
-        src={src}
-        title={name}
-        scrolling="no"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: IFRAME_W,
-          height: Math.round(IFRAME_W * 10 / 16),
-          border: "none",
-          transformOrigin: "top left",
-          transform: `scale(${scale})`,
-          pointerEvents: "none",
-        }}
-      />
-    </div>
-  );
-}

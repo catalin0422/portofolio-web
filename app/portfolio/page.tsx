@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState, CSSProperties } from "react";
 import Link from "next/link";
 import {
-  UtensilsCrossed,
   Zap,
   Smartphone,
   Server,
@@ -17,6 +16,8 @@ import {
   ArrowUpRight,
   Check,
   Code2,
+  Users,
+  Megaphone,
 } from "lucide-react";
 import { projects } from "@/lib/portfolio-data";
 import { HeroAnimated } from "@/components/HeroAnimated";
@@ -57,16 +58,16 @@ const services = [
     icon: LayoutDashboard,
     title: "Pagină de Prezentare",
     desc: "Primul tău angajat digital — lucrează 24/7 și convinge vizitatorii înainte să suni tu.",
-    includes: ["Design personalizat", "Animații", "Formular contact", "SEO", "Deployment", "Cod sursă predat"],
+    includes: ["Design personalizat", "Animații & micro-interacțiuni", "Formular contact", "SEO on-page", "Deployment inclus", "Cod sursă predat"],
     accent: "from-cyan-100 to-sky-50",
     iconColor: "text-cyan-600",
     border: "group-hover:border-cyan-200",
   },
   {
     icon: Calendar,
-    title: "Site cu Rezervări",
-    desc: "Clienții se programează singuri, tu primești notificarea. Fără telefoane, fără confuzie.",
-    includes: ["Calendar interactiv", "Confirmare email automată", "Dashboard admin", "Gestionare disponibilitate", "Notificări"],
+    title: "Programări Online + Dashboard",
+    desc: "Clienții se programează singuri, 24/7. Tu deschizi dimineața un dashboard cu ziua deja organizată — fără telefoane, fără confuzie.",
+    includes: ["Calendar interactiv", "Confirmare email/SMS automată", "Dashboard admin complet", "Gestionare personal & orare", "Statistici & rapoarte", "Notificări clienți"],
     accent: "from-violet-100 to-purple-50",
     iconColor: "text-violet-600",
     border: "group-hover:border-violet-200",
@@ -74,11 +75,29 @@ const services = [
   {
     icon: ShoppingCart,
     title: "Magazin Online",
-    desc: "Vânzări non-stop, fără abonament lunar la platforme terțe.",
-    includes: ["Catalog produse", "Coș & checkout", "Plăți online", "Gestionare stoc", "Comenzi"],
+    desc: "Vânzări non-stop, fără abonament lunar la platforme terțe. Controlul total e la tine.",
+    includes: ["Catalog produse", "Coș & checkout", "Plăți online (card/Stripe)", "Gestionare stoc", "Comenzi & livrări", "Dashboard vânzări"],
     accent: "from-orange-100 to-amber-50",
     iconColor: "text-orange-500",
     border: "group-hover:border-orange-200",
+  },
+  {
+    icon: Users,
+    title: "Portal Clienți + CRM",
+    desc: "Clienții tăi au cont propriu cu istoricul programărilor și documentele lor. Tu ai o bază de date organizată și fidelizare automată.",
+    includes: ["Login clienți", "Istoric programări & facturi", "Documente personalizate", "Program de fidelitate", "Email marketing integrat", "Segmentare clienți"],
+    accent: "from-emerald-100 to-teal-50",
+    iconColor: "text-emerald-600",
+    border: "group-hover:border-emerald-200",
+  },
+  {
+    icon: Megaphone,
+    title: "Landing Page de Campanie",
+    desc: "O pagină cu un singur scop: să convertească. Perfectă pentru lansări de produs, evenimente, promoții sezoniere sau reclame plătite.",
+    includes: ["Copywriting structurat", "CTA optimizat", "Formular lead capture", "Integrare Meta / Google Ads", "Analytics & conversii"],
+    accent: "from-yellow-100 to-amber-50",
+    iconColor: "text-yellow-600",
+    border: "group-hover:border-yellow-200",
   },
 ];
 
@@ -89,55 +108,17 @@ const benefits = [
   { icon: LayoutDashboard, title: "Panou de administrare",    desc: "Dashboard intuitiv inclus, ca să îți gestionezi singur conținutul, clienții și statisticile." },
 ];
 
-/* ─── Live iframe preview for project cards ─────────────────────────────── */
-const IFRAME_RENDER_W = 1280;
-
-function IframePreview({ src, image, name }: { src?: string; image: string; name: string }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.43);
-
-  useEffect(() => {
-    if (!src) return;
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => {
-      setScale(e.contentRect.width / IFRAME_RENDER_W);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [src]);
-
+/* ─── Static image preview for project cards ────────────────────────────── */
+function ProjectPreview({ image, name }: { image: string; name: string }) {
   return (
-    <div
-      ref={wrapRef}
-      className="mx-6 relative aspect-[16/10] rounded-xl overflow-hidden bg-zinc-100"
-    >
-      {src ? (
-        <iframe
-          src={src}
-          title={name}
-          scrolling="no"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: IFRAME_RENDER_W,
-            height: Math.round(IFRAME_RENDER_W * 10 / 16),
-            border: "none",
-            transformOrigin: "top left",
-            transform: `scale(${scale})`,
-            pointerEvents: "none",
-          }}
-        />
-      ) : (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={image}
-          alt={name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          loading="lazy"
-        />
-      )}
+    <div className="mx-6 relative aspect-[16/10] rounded-xl overflow-hidden bg-stone-100">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={image}
+        alt={name}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+      />
     </div>
   );
 }
@@ -209,9 +190,9 @@ export default function PortfolioPage() {
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((s, i) => (
-            <Reveal key={s.title} delay={i * 70}>
+            <Reveal key={s.title} delay={i * 60}>
               <div className={`group relative p-7 rounded-2xl border border-stone-200 bg-white shadow-card hover:shadow-card-hover ${s.border} transition-all duration-300 overflow-hidden h-full flex flex-col`}>
                 <div className={`absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gradient-to-br ${s.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                 <div className="relative flex flex-col h-full">
@@ -220,6 +201,7 @@ export default function PortfolioPage() {
                   </div>
                   <h3 className="text-lg font-bold mb-2 text-stone-900">{s.title}</h3>
                   <p className="text-stone-500 leading-relaxed text-sm mb-5">{s.desc}</p>
+
                   <div className="mt-auto flex flex-wrap gap-1.5">
                     {s.includes.map((tag) => (
                       <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full bg-stone-100 border border-stone-200 text-stone-500 font-medium">
@@ -275,7 +257,7 @@ export default function PortfolioPage() {
                   </div>
                 </div>
 
-                <IframePreview src={p.previewUrl} image={p.image} name={p.name} />
+                <ProjectPreview image={p.image} name={p.name} />
 
                 <div className="px-6 pt-4 pb-6">
                   <p className="text-sm text-stone-500 leading-relaxed">{p.shortDesc}</p>

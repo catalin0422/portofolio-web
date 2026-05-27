@@ -1265,9 +1265,4 @@ function DentalReports() {
 // MAP & EXPORT
 // ============================================================
 
-export const mockupsBySlug: Record<string, React.ComponentType[]> = {
-  "maison-barber": [MaisonLanding, MaisonBooking, MaisonDashboard, MaisonStats],
-  "tohami-winery": [TohamiHero, TohamiWines, TohamiStory, TohamiContact],
-  "pizzeria-da-luigi": [PizzaLanding, PizzaMenu, PizzaReservation, PizzaDashboard],
-  "dentalcare-clinic": [DentalPatient, DentalCalendar, DentalNewAppt, DentalReports],
-};
+export const mockupsBySlug: Record<string, React.ComponentType[]> = {};

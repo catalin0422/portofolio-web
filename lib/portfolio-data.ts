@@ -31,7 +31,7 @@ export const projects: Project[] = [
     year: "2025",
     duration: "6 săptămâni",
     liveLabel: "Vezi demo live",
-    previewUrl: "https://barbershop-6m5s.vercel.app",
+    liveUrl: "https://barbershop-6m5s.vercel.app",
     tech: ["Next.js 14", "Tailwind CSS", "Supabase", "TypeScript", "Resend"],
     features: [
       "Sistem de programări cu calendar interactiv",
@@ -43,7 +43,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-zinc-800 via-zinc-900 to-black",
     accent: "bg-cyan-500/10 text-cyan-300 border-cyan-500/20",
-    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1200&q=85&auto=format&fit=crop",
+    image: "/Barbershop.png",
     screens: [
       {
         title: "Pagina principală",
@@ -79,7 +79,7 @@ export const projects: Project[] = [
     year: "2025",
     duration: "4 săptămâni",
     liveLabel: "Vezi live",
-    previewUrl: "https://beauty-clinic-tan.vercel.app/",
+    liveUrl: "https://beauty-clinic-tan.vercel.app/",
     tech: ["Next.js 14", "Tailwind CSS", "Framer Motion", "Resend", "TypeScript"],
     features: [
       "Hero elegant cu fotografie full-screen și CTA proeminent",
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-rose-900 via-zinc-900 to-black",
     accent: "bg-rose-500/10 text-rose-300 border-rose-500/20",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=85&auto=format&fit=crop",
+    image: "/Lumina Beauty Clinic.png",
     screens: [
       {
         title: "Pagina principală",
@@ -116,18 +116,18 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "pizzeria-da-luigi",
-    name: "Restaurant",
-    category: "Restaurant & Pizzerie",
+    slug: "embers-restaurant",
+    name: "Restaurant Embers",
+    category: "Restaurant & Café",
     shortDesc:
       "Site elegant cu rezervări online, meniu interactiv, galerie și panou de administrare.",
     longDesc:
-      "Site complet pentru o pizzerie artizanală din Chișinău. Hero cu carusel de fotografii, meniu cu categorii, galerie premium, sistem de rezervări online cu confirmare automată și un panou de administrare separat unde proprietarul vede toate rezervările zilei și gestionează meniul.",
-    client: "La Forno · Chișinău",
+      "Site complet pentru restaurantul Embers. Hero cu carusel de fotografii, meniu cu categorii, galerie premium, sistem de rezervări online cu confirmare automată și un panou de administrare separat unde proprietarul vede toate rezervările zilei și gestionează meniul.",
+    client: "Embers Restaurant",
     year: "2026",
     duration: "5 săptămâni",
     liveLabel: "Vezi live",
-    previewUrl: "https://la-forno.vercel.app/",
+    liveUrl: "https://sisters-ebon.vercel.app/",
     tech: [
       "Next.js 14",
       "Tailwind CSS",
@@ -137,7 +137,7 @@ export const projects: Project[] = [
     ],
     features: [
       "Hero cu carusel de fotografii și animații elegante",
-      "Meniu cu categorii (Pizza, Paste, Antipasti, Deserturi)",
+      "Meniu cu categorii și descrieri detaliate",
       "Galerie foto cu grid asimetric și hover-effects",
       "Formular rezervare cu validare și confirmare prin email",
       "Dashboard administrator cu toate rezervările și meniu CRUD",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-red-900 via-zinc-900 to-black",
     accent: "bg-orange-500/10 text-orange-300 border-orange-500/20",
-    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1200&q=85&auto=format&fit=crop",
+    image: "/Restaurant Embers.png",
     screens: [
       {
         title: "Pagina principală",
@@ -170,18 +170,18 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "pensiune-hotel",
-    name: "Pensiune & Hotel",
-    category: "Turism & Ospitalitate",
+    slug: "trei-pastori",
+    name: "Pensiunea Trei Pastori",
+    category: "Pensiune & Turism",
     shortDesc:
       "Site cu galerie premium, camere detaliate, rezervări online și informații despre destinație.",
     longDesc:
-      "Un site de prezentare pentru o pensiune sau hotel. Turiștii văd galeria cu camere, facilitățile disponibile și pot face o rezervare direct din site. Design cald și primitor, cu fotografii de peisaj și un sistem de rezervări simplu și rapid.",
-    client: "Pensiune & Hotel",
+      "Site de prezentare pentru Pensiunea Trei Pastori. Turiștii văd galeria cu camere, facilitățile disponibile și pot face o rezervare direct din site. Design cald și primitor, cu fotografii de peisaj și un sistem de rezervări simplu și rapid.",
+    client: "Pensiunea Trei Pastori",
     year: "2025",
     duration: "4 săptămâni",
     liveLabel: "Vezi live",
-    previewUrl: "https://pensiune.vercel.app/",
+    liveUrl: "https://treipastori.md",
     tech: ["Next.js 14", "Tailwind CSS", "Resend", "TypeScript", "Framer Motion"],
     features: [
       "Hero full-screen cu fotografii panoramice de peisaj",
@@ -193,7 +193,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-emerald-900 via-zinc-900 to-black",
     accent: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
-    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1200&q=85&auto=format&fit=crop",
+    image: "/trei-pastori.png",
     screens: [
       {
         title: "Pagina principală",
@@ -214,6 +214,149 @@ export const projects: Project[] = [
         title: "Rezervare online",
         desc: "Formular cu dată sosire, plecare și număr de persoane.",
         gradient: "from-cyan-900 via-zinc-900 to-black",
+      },
+    ],
+  },
+  {
+    slug: "hotel-melia-durres",
+    name: "Hotel Melia Durrës",
+    category: "Hotel & Ospitalitate",
+    shortDesc:
+      "Site cu galerie premium, camere detaliate, rezervări online și informații despre destinație.",
+    longDesc:
+      "Site de prezentare pentru Hotel Melia Durrës. Turiștii văd galeria cu camere, facilitățile disponibile și pot face o rezervare direct din site. Design elegant și modern, cu fotografii premium și un sistem de rezervări simplu și rapid.",
+    client: "Hotel Melia Durrës",
+    year: "2025",
+    duration: "4 săptămâni",
+    liveLabel: "Vezi live",
+    liveUrl: "https://pensiune.vercel.app/",
+    tech: ["Next.js 14", "Tailwind CSS", "Resend", "TypeScript", "Framer Motion"],
+    features: [
+      "Hero full-screen cu fotografii panoramice de peisaj",
+      "Pagina camere cu galerie, facilități și prețuri per noapte",
+      "Sistem rezervări cu selecție dată check-in/check-out",
+      "Secțiunea despre destinație cu harta și atracții locale",
+      "Galerie foto premium cu grid editorial",
+      "Design responsiv adaptat pentru orice dispozitiv",
+    ],
+    gradient: "from-emerald-900 via-zinc-900 to-black",
+    accent: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
+    image: "/Hotel.png",
+    screens: [
+      {
+        title: "Pagina principală",
+        desc: "Hero panoramic cu CTA rezervare și facilități principale.",
+        gradient: "from-emerald-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Camere & Apartamente",
+        desc: "Galerie per cameră, facilități și prețuri afișate clar.",
+        gradient: "from-teal-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Galerie foto",
+        desc: "Grid editorial cu imagini din pensiune și împrejurimi.",
+        gradient: "from-green-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Rezervare online",
+        desc: "Formular cu dată sosire, plecare și număr de persoane.",
+        gradient: "from-cyan-900 via-zinc-900 to-black",
+      },
+    ],
+  },
+  {
+    slug: "pizzeria-la-forno",
+    name: "La Forno",
+    category: "Restaurant & Pizzerie",
+    shortDesc:
+      "Site cu meniu interactiv, rezervări online, galerie foto și panou de administrare.",
+    longDesc:
+      "Site complet pentru o pizzerie artizanală. Hero cu carusel de fotografii, meniu cu categorii, galerie premium, sistem de rezervări online cu confirmare automată și un panou de administrare unde proprietarul vede toate rezervările și gestionează meniul.",
+    client: "La Forno · Chișinău",
+    year: "2025",
+    duration: "5 săptămâni",
+    liveLabel: "Vezi live",
+    liveUrl: "https://la-forno.vercel.app/",
+    tech: ["Next.js 14", "Tailwind CSS", "Playfair Display", "Supabase", "Resend"],
+    features: [
+      "Hero cu carusel de fotografii și animații elegante",
+      "Meniu cu categorii (Pizza, Paste, Antipasti, Deserturi)",
+      "Galerie foto cu grid asimetric și hover-effects",
+      "Formular rezervare cu validare și confirmare prin email",
+      "Dashboard administrator cu toate rezervările și meniu CRUD",
+      "Design tipografic premium (Playfair Display + Inter)",
+    ],
+    gradient: "from-orange-900 via-zinc-900 to-black",
+    accent: "bg-orange-500/10 text-orange-300 border-orange-500/20",
+    image: "/Pizzeria La Forno.png",
+    screens: [
+      {
+        title: "Pagina principală",
+        desc: "Hero cu carusel foto, tipografie editorială și CTA elegant.",
+        gradient: "from-orange-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Meniu interactiv",
+        desc: "Categorii, descrieri rafinate și prețuri în culoarea brandului.",
+        gradient: "from-amber-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Formular rezervare",
+        desc: "Selecție dată, oră, persoane — confirmare prin email.",
+        gradient: "from-red-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Panou administrator",
+        desc: "Listă rezervări cu status, note și acțiuni rapide.",
+        gradient: "from-rose-900 via-zinc-900 to-black",
+      },
+    ],
+  },
+  {
+    slug: "brightdent-clinic",
+    name: "BrightDent Clinic",
+    category: "Clinică Dentară",
+    shortDesc:
+      "Site de prezentare cu servicii detaliate, galerie, programări online și echipă medicală.",
+    longDesc:
+      "Site complet pentru o clinică dentară. Pacienții descoperă serviciile disponibile, echipa de medici și pot face o programare direct din site. Design profesional și curat, care inspiră încredere și ghidează pacientul spre acțiune.",
+    client: "BrightDent Clinic",
+    year: "2025",
+    duration: "4 săptămâni",
+    liveLabel: "Vezi live",
+    tech: ["Next.js 14", "Tailwind CSS", "TypeScript", "Resend", "Framer Motion"],
+    features: [
+      "Hero profesional cu CTA programare proeminent",
+      "Pagina servicii cu descrieri și prețuri transparente",
+      "Profiluri medici cu specializări și experiență",
+      "Formular de programare cu confirmare automată prin email",
+      "Galerie cabinet și echipamente moderne",
+      "Design responsiv optimizat pentru orice dispozitiv",
+    ],
+    gradient: "from-sky-900 via-zinc-900 to-black",
+    accent: "bg-sky-500/10 text-sky-300 border-sky-500/20",
+    image: "/BrightDent Clinic.png",
+    screens: [
+      {
+        title: "Pagina principală",
+        desc: "Hero cu CTA programare și prezentare servicii principale.",
+        gradient: "from-sky-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Servicii & Prețuri",
+        desc: "Lista completă cu descrieri și prețuri transparente.",
+        gradient: "from-blue-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Echipa medicală",
+        desc: "Profiluri medici cu specializări și experiență.",
+        gradient: "from-cyan-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Programare online",
+        desc: "Formular simplu cu selecție serviciu și confirmare email.",
+        gradient: "from-teal-900 via-zinc-900 to-black",
       },
     ],
   },
