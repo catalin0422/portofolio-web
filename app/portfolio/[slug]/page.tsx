@@ -162,7 +162,6 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           >
             <BrowserMockup
               urlLabel={(project.liveUrl || project.previewUrl)?.replace("https://", "") ?? `${project.slug}.app`}
-              Mockup={mockups[0]}
               image={heroImage}
               large
             />
