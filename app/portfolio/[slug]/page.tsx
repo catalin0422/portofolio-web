@@ -158,8 +158,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <Reveal delay={200}>
           <div
-            onClick={() => setLightbox(0)}
-            className="cursor-zoom-in transition-transform hover:scale-[1.005] duration-500"
+            className="transition-transform hover:scale-[1.005] duration-500"
           >
             <BrowserMockup
               urlLabel={(project.liveUrl || project.previewUrl)?.replace("https://", "") ?? `${project.slug}.app`}

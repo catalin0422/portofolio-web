@@ -111,12 +111,12 @@ const benefits = [
 /* ─── Static image preview for project cards ────────────────────────────── */
 function ProjectPreview({ image, name }: { image: string; name: string }) {
   return (
-    <div className="mx-6 relative aspect-[16/10] rounded-xl overflow-hidden bg-stone-100">
+    <div className="mx-6 relative rounded-xl overflow-hidden bg-stone-100">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={image}
         alt={name}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        className="w-full h-auto block transition-transform duration-700 group-hover:scale-105"
         loading="lazy"
       />
     </div>

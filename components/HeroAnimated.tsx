@@ -13,7 +13,7 @@ function Img({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-const MaisonImg    = () => <Img src="/Barbershop.png"             alt="Maison Barber"     />;
+const MaisonImg    = () => <img src="/Barbershop.png" alt="Maison Barber" style={{ width: "100%", height: "auto", display: "block" }} />;
 const BeautyImg    = () => <Img src="/Lumina Beauty Clinic.png"   alt="Beauty Clinic"     />;
 const EmbersImg    = () => <Img src="/Restaurant Embers.png"      alt="Embers"            />;
 const TreiImg      = () => <Img src="/trei-pastori.png"           alt="Trei Pastori"      />;
