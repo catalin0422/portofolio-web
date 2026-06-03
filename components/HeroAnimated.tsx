@@ -15,41 +15,38 @@ function Img({ src, alt }: { src: string; alt: string }) {
 
 const MaisonImg    = () => <img src="/Barbershop.png" alt="Maison Barber" style={{ width: "100%", height: "auto", display: "block" }} />;
 const BeautyImg    = () => <Img src="/Lumina Beauty Clinic.png"   alt="Beauty Clinic"     />;
-const EmbersImg    = () => <Img src="/Restaurant Embers.png"      alt="Embers"            />;
 const TreiImg      = () => <Img src="/trei-pastori.png"           alt="Trei Pastori"      />;
-const HotelImg     = () => <Img src="/Hotel.png"                  alt="Pensiune & Hotel"  />;
-const LaFornoImg   = () => <Img src="/Pizzeria La Forno.png"      alt="La Forno"          />;
+const HotelImg     = () => <Img src="/melia-durres.png"           alt="Hotel Melia Durrës" />;
+const LaFornoImg   = () => <Img src="/la-forno-hero.png"          alt="La Forno"          />;
 const DentImg      = () => <Img src="/BrightDent Clinic.png"      alt="BrightDent Clinic" />;
 
 /* ─── Card definitions [Component, url-label, dot-color, label] ──────────── */
 const CARD_DEFS: [React.ComponentType, string, string, string][] = [
   [MaisonImg,  "barbershop-6m5s.vercel.app",     "#f59e0b", "Maison Barber"    ],
   [BeautyImg,  "beauty-clinic-tan.vercel.app",   "#f472b6", "Beauty Clinic"    ],
-  [EmbersImg,  "sisters-ebon.vercel.app",        "#ef4444", "Restaurant Embers"],
   [TreiImg,    "treipastori.md",                 "#34d399", "Trei Pastori"     ],
-  [HotelImg,   "pensiune.vercel.app",            "#10b981", "Hotel Melia Durrës"],
+  [HotelImg,   "melia.com/hotels/albania/durres", "#10b981", "Hotel Melia Durrës"],
   [LaFornoImg, "la-forno.vercel.app",            "#f97316", "La Forno"         ],
   [DentImg,    "brightdent.vercel.app",          "#38bdf8", "BrightDent Clinic"],
 ];
 
 /* ─── Fan geometry (6 cards) ─────────────────────────────────────────────── */
-const CENTER = 3;   // card that rises first; 4th from left (true middle of 7)
+const CENTER = 2;   // 3rd from left — center of 6-card fan
 
 const FAN_DESKTOP = [
-  { x: -430, y:  90, r: -21 },
-  { x: -280, y:  28, r: -13 },
-  { x: -140, y:  18, r:  -6 },
+  { x: -350, y:  90, r: -20 },
+  { x: -185, y:  28, r: -11 },
   { x:    0, y: -15, r:   0 },   // CENTER
-  { x:  140, y:  18, r:   6 },
-  { x:  280, y:  28, r:  13 },
-  { x:  430, y:  90, r:  21 },
+  { x:  155, y:  18, r:   8 },
+  { x:  290, y:  28, r:  14 },
+  { x:  430, y:  90, r:  20 },
 ];
 
-// On mobile show only indices 2, 3, 4 (hide 0, 1, 5, 6)
+// On mobile show only fanIdx 1, 2, 3 (hide 0, 4, 5)
 const FAN_MOBILE: Record<number, { x: number; y: number; r: number }> = {
-  2: { x: -130, y:  22, r: -12 },
-  3: { x:    0, y: -12, r:   0 },
-  4: { x:  130, y:  22, r:  12 },
+  1: { x: -130, y:  22, r: -12 },
+  2: { x:    0, y: -12, r:   0 },
+  3: { x:  130, y:  22, r:  12 },
 };
 
 /* ─── Card + viewport dimensions ────────────────────────────────────────── */
@@ -157,7 +154,7 @@ export function HeroAnimated() {
   function cardStyle(i: number): CSSProperties {
     // fanIdx = pozitia in evantai (0=stanga extrema, 3=centru, 6=dreapta extrema)
     const fanIdx = (i - centerIdx + CARD_DEFS.length + CENTER) % CARD_DEFS.length;
-    const hiddenOnMobile = isMobile && (fanIdx === 0 || fanIdx === 1 || fanIdx === 5 || fanIdx === 6);
+    const hiddenOnMobile = isMobile && (fanIdx === 0 || fanIdx === 4 || fanIdx === 5);
 
     if (phase === 0) {
       return {

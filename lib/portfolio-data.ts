@@ -116,60 +116,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "embers-restaurant",
-    name: "Restaurant Embers",
-    category: "Restaurant & Café",
-    shortDesc:
-      "Site elegant cu rezervări online, meniu interactiv, galerie și panou de administrare.",
-    longDesc:
-      "Site complet pentru restaurantul Embers. Hero cu carusel de fotografii, meniu cu categorii, galerie premium, sistem de rezervări online cu confirmare automată și un panou de administrare separat unde proprietarul vede toate rezervările zilei și gestionează meniul.",
-    client: "Embers Restaurant",
-    year: "2026",
-    duration: "5 săptămâni",
-    liveLabel: "Vezi live",
-    liveUrl: "https://sisters-ebon.vercel.app/",
-    tech: [
-      "Next.js 14",
-      "Tailwind CSS",
-      "Playfair Display",
-      "Supabase",
-      "Resend",
-    ],
-    features: [
-      "Hero cu carusel de fotografii și animații elegante",
-      "Meniu cu categorii și descrieri detaliate",
-      "Galerie foto cu grid asimetric și hover-effects",
-      "Formular rezervare cu validare și confirmare prin email",
-      "Dashboard administrator cu toate rezervările și meniu CRUD",
-      "Design tipografic premium (Playfair Display + Inter)",
-    ],
-    gradient: "from-red-900 via-zinc-900 to-black",
-    accent: "bg-orange-500/10 text-orange-300 border-orange-500/20",
-    image: "/Restaurant Embers.png",
-    screens: [
-      {
-        title: "Pagina principală",
-        desc: "Hero cu carusel foto, tipografie editorială și CTA elegant.",
-        gradient: "from-red-900 via-zinc-900 to-black",
-      },
-      {
-        title: "Meniu interactiv",
-        desc: "Categorii, descrieri rafinate și prețuri în culoarea brandului.",
-        gradient: "from-orange-900 via-zinc-900 to-black",
-      },
-      {
-        title: "Formular rezervare",
-        desc: "Selecție dată, oră, persoane — confirmare prin email.",
-        gradient: "from-amber-900 via-zinc-900 to-black",
-      },
-      {
-        title: "Panou administrator",
-        desc: "Listă rezervări cu status, note și acțiuni rapide.",
-        gradient: "from-rose-900 via-zinc-900 to-black",
-      },
-    ],
-  },
-  {
     slug: "trei-pastori",
     name: "Pensiunea Trei Pastori",
     category: "Pensiune & Turism",
@@ -229,7 +175,7 @@ export const projects: Project[] = [
     year: "2025",
     duration: "4 săptămâni",
     liveLabel: "Vezi live",
-    liveUrl: "https://pensiune.vercel.app/",
+    liveUrl: "https://www.melia.com/en/hotels/albania/durres/melia-durres-albania",
     tech: ["Next.js 14", "Tailwind CSS", "Resend", "TypeScript", "Framer Motion"],
     features: [
       "Hero full-screen cu fotografii panoramice de peisaj",
@@ -241,7 +187,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-emerald-900 via-zinc-900 to-black",
     accent: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
-    image: "/Hotel.png",
+    image: "/melia-durres.png",
     screens: [
       {
         title: "Pagina principală",
@@ -289,7 +235,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-orange-900 via-zinc-900 to-black",
     accent: "bg-orange-500/10 text-orange-300 border-orange-500/20",
-    image: "/Pizzeria La Forno.png",
+    image: "/la-forno-hero.png",
     screens: [
       {
         title: "Pagina principală",
@@ -324,6 +270,7 @@ export const projects: Project[] = [
     client: "BrightDent Clinic",
     year: "2025",
     duration: "4 săptămâni",
+    liveUrl: "https://brightdent.vercel.app/",
     liveLabel: "Vezi live",
     tech: ["Next.js 14", "Tailwind CSS", "TypeScript", "Resend", "Framer Motion"],
     features: [
