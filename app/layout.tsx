@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Dogaru Cătălin — Web Developer",
   description:
     "Site-uri ultra-rapide și sisteme de management pentru afaceri locale. Fără abonamente lunare. Cod personalizat. Performanță maximă.",
+  icons: {
+    icon: "/lumora.png",
+  },
   other: {
     "format-detection": "telephone=no",
   },

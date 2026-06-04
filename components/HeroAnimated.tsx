@@ -16,7 +16,7 @@ function Img({ src, alt }: { src: string; alt: string }) {
 const MaisonImg    = () => <img src="/Barbershop.png" alt="Maison Barber" style={{ width: "100%", height: "auto", display: "block" }} />;
 const BeautyImg    = () => <Img src="/Lumina Beauty Clinic.png"   alt="Beauty Clinic"     />;
 const TreiImg      = () => <Img src="/trei-pastori.png"           alt="Trei Pastori"      />;
-const HotelImg     = () => <Img src="/melia-durres.png"           alt="Hotel Melia Durrës" />;
+const HotelImg     = () => <Img src="/Suisse-Plaza.png"           alt="Suisse Plaza"       />;
 const LaFornoImg   = () => <Img src="/la-forno-hero.png"          alt="La Forno"          />;
 const DentImg      = () => <Img src="/BrightDent Clinic.png"      alt="BrightDent Clinic" />;
 
@@ -25,7 +25,7 @@ const CARD_DEFS: [React.ComponentType, string, string, string][] = [
   [MaisonImg,  "barbershop-6m5s.vercel.app",     "#f59e0b", "Maison Barber"    ],
   [BeautyImg,  "beauty-clinic-tan.vercel.app",   "#f472b6", "Beauty Clinic"    ],
   [TreiImg,    "treipastori.md",                 "#34d399", "Trei Pastori"     ],
-  [HotelImg,   "melia.com/hotels/albania/durres", "#10b981", "Hotel Melia Durrës"],
+  [HotelImg,   "suisse-plaza.vercel.app",         "#10b981", "Suisse Plaza"      ],
   [LaFornoImg, "la-forno.vercel.app",            "#f97316", "La Forno"         ],
   [DentImg,    "brightdent.vercel.app",          "#38bdf8", "BrightDent Clinic"],
 ];
@@ -34,23 +34,23 @@ const CARD_DEFS: [React.ComponentType, string, string, string][] = [
 const CENTER = 2;   // 3rd from left — center of 6-card fan
 
 const FAN_DESKTOP = [
-  { x: -350, y:  90, r: -20 },
-  { x: -185, y:  28, r: -11 },
-  { x:    0, y: -15, r:   0 },   // CENTER
-  { x:  155, y:  18, r:   8 },
-  { x:  290, y:  28, r:  14 },
-  { x:  430, y:  90, r:  20 },
+  { x: -370, y:  55, r: -11 },
+  { x: -200, y:  18, r:  -6 },
+  { x:    0, y: -10, r:   0 },   // CENTER
+  { x:  165, y:  12, r:   5 },
+  { x:  305, y:  18, r:   8 },
+  { x:  450, y:  55, r:  11 },
 ];
 
 // On mobile show only fanIdx 1, 2, 3 (hide 0, 4, 5)
 const FAN_MOBILE: Record<number, { x: number; y: number; r: number }> = {
-  1: { x: -130, y:  22, r: -12 },
-  2: { x:    0, y: -12, r:   0 },
-  3: { x:  130, y:  22, r:  12 },
+  1: { x: -145, y:  16, r:  -6 },
+  2: { x:    0, y:  -8, r:   0 },
+  3: { x:  145, y:  16, r:   6 },
 };
 
 /* ─── Card + viewport dimensions ────────────────────────────────────────── */
-const CARD_W = 256;
+const CARD_W = 290;
 const IMG_H  = Math.round(CARD_W * 10 / 16);   // 160px
 const CARD_H = IMG_H + 32;                       // + chrome bar
 

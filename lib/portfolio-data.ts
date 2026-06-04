@@ -164,18 +164,18 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "hotel-melia-durres",
-    name: "Hotel Melia Durrës",
+    slug: "hotel-suisse-plaza",
+    name: "Suisse Plaza",
     category: "Hotel & Ospitalitate",
     shortDesc:
       "Site cu galerie premium, camere detaliate, rezervări online și informații despre destinație.",
     longDesc:
-      "Site de prezentare pentru Hotel Melia Durrës. Turiștii văd galeria cu camere, facilitățile disponibile și pot face o rezervare direct din site. Design elegant și modern, cu fotografii premium și un sistem de rezervări simplu și rapid.",
-    client: "Hotel Melia Durrës",
+      "Site de prezentare pentru Suisse Plaza. Turiștii văd galeria cu camere, facilitățile disponibile și pot face o rezervare direct din site. Design elegant și modern, cu fotografii premium și un sistem de rezervări simplu și rapid.",
+    client: "Suisse Plaza",
     year: "2025",
     duration: "4 săptămâni",
     liveLabel: "Vezi live",
-    liveUrl: "https://www.melia.com/en/hotels/albania/durres/melia-durres-albania",
+    liveUrl: "https://suisse-plaza.vercel.app/",
     tech: ["Next.js 14", "Tailwind CSS", "Resend", "TypeScript", "Framer Motion"],
     features: [
       "Hero full-screen cu fotografii panoramice de peisaj",
@@ -187,7 +187,7 @@ export const projects: Project[] = [
     ],
     gradient: "from-emerald-900 via-zinc-900 to-black",
     accent: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
-    image: "/melia-durres.png",
+    image: "/Suisse-Plaza.png",
     screens: [
       {
         title: "Pagina principală",

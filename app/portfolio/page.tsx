@@ -153,9 +153,10 @@ export default function PortfolioPage() {
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200/80" style={navStyle}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2 hover:opacity-70 transition-opacity">
-            <Code2 className="w-4 h-4 text-cyan-600" />
-            <span className="font-semibold text-stone-900 tracking-tight">Dogaru Cătălin</span>
+          <a href="#" className="flex flex-col items-start hover:opacity-70 transition-opacity">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/lumora_nobg.png" alt="Lumora" className="h-7 w-auto" />
+            <span className="text-[10px] text-stone-400 font-medium tracking-tight leading-none mt-0.5">by Dogaru Cătălin</span>
           </a>
           <div className="hidden md:flex items-center gap-8 text-sm text-stone-500">
             <a href="#servicii" className="hover:text-stone-900 transition-colors">Servicii</a>
