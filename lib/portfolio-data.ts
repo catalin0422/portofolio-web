@@ -307,6 +307,49 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "acoperis",
+    name: "Acoperiș Expert",
+    category: "Construcții & Renovări",
+    shortDesc:
+      "Site de prezentare pentru o firmă de acoperișuri cu galerie de lucrări, servicii și formular de ofertă.",
+    longDesc:
+      "Site complet pentru o firmă specializată în montaj și renovare acoperișuri. Clienții descoperă serviciile disponibile, galeria cu lucrări finalizate și pot solicita o ofertă direct din site. Design curat și profesional, care inspiră încredere și ghidează vizitatorul spre contact.",
+    client: "Acoperiș Expert",
+    year: "2025",
+    duration: "3 săptămâni",
+    liveUrl: "https://acoperis-woad.vercel.app/",
+    liveLabel: "Vezi live",
+    tech: ["Next.js 14", "Tailwind CSS", "TypeScript", "Resend"],
+    features: [
+      "Hero cu CTA proeminent și prezentare servicii principale",
+      "Galerie lucrări finalizate cu filtrare pe categorii",
+      "Pagina servicii cu descrieri detaliate și prețuri orientative",
+      "Formular de cerere ofertă cu confirmare automată prin email",
+      "Secțiunea de ce ne alegi cu avantaje și garanții",
+      "Design responsiv optimizat pentru orice dispozitiv",
+    ],
+    gradient: "from-orange-900 via-zinc-900 to-black",
+    accent: "bg-orange-500/10 text-orange-300 border-orange-500/20",
+    image: "/acoperis-hero.png",
+    screens: [
+      {
+        title: "Pagina principală",
+        desc: "Hero cu CTA și prezentare servicii principale.",
+        gradient: "from-orange-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Galerie lucrări",
+        desc: "Proiecte finalizate cu filtrare pe categorii.",
+        gradient: "from-amber-900 via-zinc-900 to-black",
+      },
+      {
+        title: "Cerere ofertă",
+        desc: "Formular simplu cu confirmare automată prin email.",
+        gradient: "from-yellow-900 via-zinc-900 to-black",
+      },
+    ],
+  },
 ];
 
 export function getProject(slug: string) {
