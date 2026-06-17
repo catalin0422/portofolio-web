@@ -249,7 +249,7 @@ export const projects: Project[] = [
       },
       {
         title: "Formular rezervare",
-        desc: "Selecție dată, oră, persoane — confirmare prin email.",
+        desc: "Selecție dată, oră, persoane, cu confirmare prin email.",
         gradient: "from-red-900 via-zinc-900 to-black",
       },
       {

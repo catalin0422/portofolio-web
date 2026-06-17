@@ -57,47 +57,63 @@ const services = [
   {
     icon: LayoutDashboard,
     title: "Pagină de Prezentare",
-    desc: "Primul tău angajat digital — lucrează 24/7 și convinge vizitatorii înainte să suni tu.",
+    desc: "Primul tău angajat digital. Lucrează 24/7 și convinge vizitatorii înainte să suni tu.",
     includes: ["Design personalizat", "Animații & micro-interacțiuni", "Formular contact", "SEO on-page", "Deployment inclus", "Cod sursă predat"],
+    price: "de la €350",
     accent: "from-cyan-100 to-sky-50",
     iconColor: "text-cyan-600",
     border: "group-hover:border-cyan-200",
+    numColor: "group-hover:text-cyan-600",
+    bar: "group-hover:bg-cyan-500",
   },
   {
     icon: Calendar,
     title: "Programări Online + Dashboard",
-    desc: "Clienții se programează singuri, 24/7. Tu deschizi dimineața un dashboard cu ziua deja organizată — fără telefoane, fără confuzie.",
+    desc: "Clienții se programează singuri, 24/7. Tu deschizi dimineața un dashboard cu ziua deja organizată. Fără telefoane, fără confuzie.",
     includes: ["Calendar interactiv", "Confirmare email/SMS automată", "Dashboard admin complet", "Gestionare personal & orare", "Statistici & rapoarte", "Notificări clienți"],
+    price: "de la €900",
+    featured: true,
     accent: "from-violet-100 to-purple-50",
     iconColor: "text-violet-600",
     border: "group-hover:border-violet-200",
+    numColor: "group-hover:text-violet-600",
+    bar: "group-hover:bg-violet-500",
   },
   {
     icon: ShoppingCart,
     title: "Magazin Online",
     desc: "Vânzări non-stop, fără abonament lunar la platforme terțe. Controlul total e la tine.",
     includes: ["Catalog produse", "Coș & checkout", "Plăți online (card/Stripe)", "Gestionare stoc", "Comenzi & livrări", "Dashboard vânzări"],
+    price: "de la €1.200",
     accent: "from-orange-100 to-amber-50",
     iconColor: "text-orange-500",
     border: "group-hover:border-orange-200",
+    numColor: "group-hover:text-orange-500",
+    bar: "group-hover:bg-orange-500",
   },
   {
     icon: Users,
     title: "Portal Clienți + CRM",
     desc: "Clienții tăi au cont propriu cu istoricul programărilor și documentele lor. Tu ai o bază de date organizată și fidelizare automată.",
     includes: ["Login clienți", "Istoric programări & facturi", "Documente personalizate", "Program de fidelitate", "Email marketing integrat", "Segmentare clienți"],
+    price: "de la €1.200",
     accent: "from-emerald-100 to-teal-50",
     iconColor: "text-emerald-600",
     border: "group-hover:border-emerald-200",
+    numColor: "group-hover:text-emerald-600",
+    bar: "group-hover:bg-emerald-500",
   },
   {
     icon: Megaphone,
     title: "Landing Page de Campanie",
     desc: "O pagină cu un singur scop: să convertească. Perfectă pentru lansări de produs, evenimente, promoții sezoniere sau reclame plătite.",
     includes: ["Copywriting structurat", "CTA optimizat", "Formular lead capture", "Integrare Meta / Google Ads", "Analytics & conversii"],
+    price: "de la €300",
     accent: "from-yellow-100 to-amber-50",
     iconColor: "text-yellow-600",
     border: "group-hover:border-yellow-200",
+    numColor: "group-hover:text-yellow-600",
+    bar: "group-hover:bg-yellow-500",
   },
 ];
 
@@ -135,7 +151,8 @@ function Label({ children }: { children: React.ReactNode }) {
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 export default function PortfolioPage() {
-  const whatsappLink = "https://wa.me/40733646257?text=Salut%20C%C4%83t%C4%83lin%2C%20a%C8%99%20vrea%20s%C4%83%20discut%C4%83m%20despre%20un%20proiect.";
+  const whatsappBase = "https://wa.me/40733646257";
+  const whatsappLink = `${whatsappBase}?text=${encodeURIComponent("Salut Cătălin, aș vrea să discutăm despre un proiect.")}`;
 
   // Navbar entrance: starts invisible, animates in on first paint
   const [navReady, setNavReady] = useState(false);
@@ -186,29 +203,61 @@ export default function PortfolioPage() {
               Ce pot construi<br />pentru tine
             </h2>
             <p className="mt-5 text-stone-500 leading-relaxed">
-              De la o pagină simplă de prezentare până la aplicații complexe — fiecare proiect e construit de la zero, adaptat pe nevoile tale.
+              De la o pagină simplă de prezentare până la aplicații complexe, fiecare proiect e construit de la zero, adaptat pe nevoile tale.
             </p>
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="border-t border-stone-200">
           {services.map((s, i) => (
             <Reveal key={s.title} delay={i * 60}>
-              <div className={`group relative p-7 rounded-2xl border border-stone-200 bg-white shadow-card hover:shadow-card-hover ${s.border} transition-all duration-300 overflow-hidden h-full flex flex-col`}>
-                <div className={`absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gradient-to-br ${s.accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                <div className="relative flex flex-col h-full">
-                  <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-stone-50 border border-stone-200 mb-5">
-                    <s.icon className={`w-5 h-5 ${s.iconColor}`} />
-                  </div>
-                  <h3 className="text-lg font-bold mb-2 text-stone-900">{s.title}</h3>
-                  <p className="text-stone-500 leading-relaxed text-sm mb-5">{s.desc}</p>
+              <div className="group relative border-b border-stone-200 transition-colors duration-300 hover:bg-white">
+                {/* accent bar on hover */}
+                <span className={`absolute left-0 top-0 bottom-0 w-0.5 bg-transparent ${s.bar} group-hover:w-1 transition-all duration-300`} />
 
-                  <div className="mt-auto flex flex-wrap gap-1.5">
-                    {s.includes.map((tag) => (
-                      <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full bg-stone-100 border border-stone-200 text-stone-500 font-medium">
-                        {tag}
-                      </span>
-                    ))}
+                <div className="grid md:grid-cols-[5rem_1fr_auto] gap-x-8 gap-y-5 items-start py-9 pl-5 pr-2 md:pr-6">
+                  {/* number */}
+                  <div className={`text-5xl md:text-6xl font-bold tabular-nums leading-none text-stone-200 ${s.numColor} transition-colors duration-300`}>
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* content */}
+                  <div className="md:pt-1">
+                    <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
+                      <s.icon className={`w-5 h-5 flex-shrink-0 ${s.iconColor}`} />
+                      <h3 className="text-xl font-bold text-stone-900 tracking-tight">{s.title}</h3>
+                      {s.featured && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-50 border border-violet-200 text-violet-600">
+                          Cel mai cerut
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-stone-500 leading-relaxed max-w-2xl">{s.desc}</p>
+
+                    {/* includes checklist */}
+                    <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-xl">
+                      {s.includes.map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-sm text-stone-600">
+                          <Check className={`w-3.5 h-3.5 flex-shrink-0 ${s.iconColor}`} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* price + CTA */}
+                  <div className="md:pt-1 md:text-right md:min-w-[10rem]">
+                    <p className="text-xs text-stone-400 uppercase tracking-wider mb-0.5">Preț</p>
+                    <p className="text-lg font-bold text-stone-900">{s.price}</p>
+                    <a
+                      href={`${whatsappBase}?text=${encodeURIComponent(`Salut Cătălin, mă interesează serviciul „${s.title}".`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-stone-900 hover:text-emerald-600 transition-colors"
+                    >
+                      Discută acest serviciu
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -231,7 +280,7 @@ export default function PortfolioPage() {
               Cum ar putea arăta<br />site-ul tău
             </h2>
             <p className="mt-5 text-stone-500 leading-relaxed">
-              Fiecare proiect de mai jos este un demo funcțional — ca să îți faci o idee concretă despre ce primești.
+              Fiecare proiect de mai jos este complet funcțional, gândit până la cel mai mic detaliu. Apasă pe oricare ca să vezi exact ce poți primi.
             </p>
           </div>
         </Reveal>
@@ -315,7 +364,7 @@ export default function PortfolioPage() {
                 medicale care vor să iasă din paradigma abonamentelor lunare.
               </p>
               <p>
-                Fiecare proiect e construit de la zero, adaptat exact pe nevoile clientului —
+                Fiecare proiect e construit de la zero, adaptat exact pe nevoile clientului,
                 de la design până la deployment. Nu vând template-uri, vând soluții.
               </p>
             </div>

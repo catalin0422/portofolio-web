@@ -629,7 +629,7 @@ function PizzaMenu() {
     },
     {
       name: "Quattro Stagioni",
-      desc: "Șuncă, ciuperci, anghinare, măsline — câte un anotimp pe fiecare sfert.",
+      desc: "Șuncă, ciuperci, anghinare, măsline, câte un anotimp pe fiecare sfert.",
       price: "95",
     },
     {
@@ -883,7 +883,7 @@ function PizzaDashboard() {
       <div className="flex-1 p-4 overflow-hidden">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="font-display text-lg">Rezervări — astăzi</h2>
+            <h2 className="font-display text-lg">Rezervări astăzi</h2>
             <p className="text-[9px]" style={{ color: LF_MUTED }}>
               Sâmbătă, 2 Mai 2026 · 10 mese rezervate
             </p>
